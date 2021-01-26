@@ -30,6 +30,12 @@ public class User {
 	@Size(max = 120)
 	private String password;
 	
+	private String first;
+	private String last;
+	private String address;
+	private String phone;
+	
+	
 	@DBRef
 	private Set<Role> roles = new HashSet<>();
 	
@@ -39,6 +45,14 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+	}
+	
+	public void editUser(String first, String last, String address, String phone, Set<Role> roles) {
+		this.first = first;
+		this.last = last;
+		this.address = address;
+		this.phone = phone;
+		this.roles = roles;
 	}
 
 	public String getId() {
@@ -71,6 +85,40 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	// new fields
+
+	public String getFirst() {
+		return first;
+	}
+
+	public void setFirst(String first_name) {
+		this.first = first_name;
+	}
+
+	public String getLast() {
+		return last;
+	}
+
+	public void setLast(String last_name) {
+		this.last = last_name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public Set<Role> getRoles() {

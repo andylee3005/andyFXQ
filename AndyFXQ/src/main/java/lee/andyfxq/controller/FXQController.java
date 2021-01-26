@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lee.andyfxq.model.FXQuote;
 import lee.andyfxq.service.FXQService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/FXQ")
 public class FXQController {
