@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lee.andyfxq.model.User;
-import lee.andyfxq.repository.UserRepository;
+import lee.andyfxq.service.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -26,7 +27,8 @@ import lee.andyfxq.repository.UserRepository;
 public class UserController {
 
 	@Autowired
-	UserRepository userRepository;
+	@Qualifier("userService")
+	UserService userService;
 	
 	@GetMapping("/all")
 	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
@@ -34,7 +36,7 @@ public class UserController {
 		try {
 			List<User> users = new ArrayList<>();
 			
-			userRepository.findAll().forEach(users::add);
+			userService.getAll().forEach(users::add);
 			
 			if (users.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -48,7 +50,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
-		Optional<User> userData = userRepository.findById(id);
+		Optional<User> userData = userService.getById(id);
 		
 		if (userData.isPresent()) {
 			return new ResponseEntity<>(userData.get(), HttpStatus.OK);
@@ -60,7 +62,7 @@ public class UserController {
 	@PutMapping("/edit/{id}")
 	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<User> editUser(@PathVariable("id") String id, @RequestBody User user) {
-		Optional<User> userData = userRepository.findById(id);
+		Optional<User> userData = userService.getById(id);
 		
 		if (userData.isPresent()) {
 			User _user = userData.get();
@@ -70,7 +72,7 @@ public class UserController {
 			_user.setPhone(user.getPhone());
 			_user.setRoles(user.getRoles());
 			
-			return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+			return new ResponseEntity<>(userService._save(_user), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -79,11 +81,11 @@ public class UserController {
 	@PutMapping("/edit/profile/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<User> editSelf(@PathVariable("id") String id, @RequestBody User user) {
-		Optional<User> userData = userRepository.findById(id);
+		Optional<User> userData = userService.getById(id);
 		
 		if (userData.isPresent()) {
 			User _user = userData.get();
-			if (!userRepository.existsByEmail(user.getEmail())) {
+			if (!userService.checkEmail(user.getEmail())) {
 				_user.setEmail(user.getEmail());				
 			}  //still need to add error message if email is taken.
 			_user.setFirst(user.getFirst());
@@ -92,7 +94,7 @@ public class UserController {
 			_user.setPhone(user.getPhone());
 			
 			
-			return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+			return new ResponseEntity<>(userService._save(_user), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -102,7 +104,7 @@ public class UserController {
 	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") String id) {
 		try {
-			userRepository.deleteById(id);
+			userService.removeById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
