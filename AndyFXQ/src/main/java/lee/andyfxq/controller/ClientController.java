@@ -53,8 +53,8 @@ public class ClientController {
 		return Arrays.asList(clients);
 	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@GetMapping("/name/{fn}/{ln}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public List<Client> requestByName(@RequestHeader("Authorization") String jwt, @PathVariable String fn, @PathVariable String ln) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpEntity<String> request = setHeader(jwt);
@@ -65,8 +65,8 @@ public class ClientController {
 		return Arrays.asList(clients);
 	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@GetMapping("/email/{email}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public List<Client> requestByEmail(@RequestHeader("Authorization") String jwt, @PathVariable String email) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpEntity<String> request = setHeader(jwt);
@@ -77,8 +77,8 @@ public class ClientController {
 		return Arrays.asList(clients);
 	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@GetMapping("/address/{address}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public List<Client> requestByAddress(@RequestHeader("Authorization") String jwt, @PathVariable String address) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpEntity<String> request = setHeader(jwt);
@@ -89,8 +89,8 @@ public class ClientController {
 		return Arrays.asList(clients);
 	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@GetMapping("/phone/{phone}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public List<Client> requestByPhone(@RequestHeader("Authorization") String jwt, @PathVariable String phone) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpEntity<String> request = setHeader(jwt);
@@ -101,8 +101,8 @@ public class ClientController {
 		return Arrays.asList(clients);
 	}
 	
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	@GetMapping("/id/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public Optional<Client> requestById(@RequestHeader("Authorization") String jwt,@PathVariable String id) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpEntity<String> request = setHeader(jwt);
@@ -113,8 +113,8 @@ public class ClientController {
 		return clients;
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Client> createClient(@RequestHeader("Authorization") String jwt, @RequestBody Client client) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -128,8 +128,8 @@ public class ClientController {
 		return response;
 	}
 	
-	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	@PutMapping("/edit/{id}")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Client> editClient(@RequestHeader("Authorization") String jwt, @PathVariable("id") String id, @RequestBody Client client) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -142,8 +142,8 @@ public class ClientController {
 		return response;
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/edit/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteClient(@RequestHeader("Authorization") String jwt, @PathVariable("id") String id) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpEntity<String> request = setHeader(jwt);
