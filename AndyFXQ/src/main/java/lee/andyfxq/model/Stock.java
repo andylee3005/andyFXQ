@@ -40,6 +40,12 @@ public class Stock {
 	private String timePurchased;
 	private long timeDate;
 
+	
+	
+	public Stock() {
+		
+	}
+
 	public Stock(@NotNull @NotBlank String spotId, @NotNull @NotBlank String symbol, @NotNull @NotBlank String currency, @NotNull @NotBlank String volume,
 			@NotNull @NotBlank String price) {
 		super();

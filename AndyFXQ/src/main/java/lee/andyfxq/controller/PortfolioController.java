@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import lee.andyfxq.model.Portfolio;
+import lee.andyfxq.model.Stock;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -87,7 +88,7 @@ public class PortfolioController {
 	}
 	
 	@PutMapping("/edit/{id}")
-	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Portfolio> editPortfolio(@RequestHeader("Authorization") String jwt, @PathVariable String id, @RequestBody Portfolio portf) {
 		RestTemplate restTemp = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
